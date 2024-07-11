@@ -4,6 +4,22 @@ const process = require("node:process");
 
 const rules = require("./rules");
 
+function replaceImportForLayout(file) {
+  const contents = fs.readFileSync(file, { encoding: "utf-8" });
+  const lines = contents.split("\n");
+  const newLines = [];
+  for (let line of lines) {
+    for (let rule of Object.keys(rules)) {
+      if (line.indexOf(rule) !== -1) {
+        line = line.replace(rule, rules[rule]);
+      }
+    }
+    newLines.push(line);
+  }
+  const newContents = newLines.join("\n");
+  fs.writeFileSync(file, newContents, { encoding: "utf-8" });
+}
+
 function replaceImportForJava(file) {
   const contents = fs.readFileSync(file, { encoding: "utf-8" });
   const lines = contents.split("\n");
@@ -51,6 +67,8 @@ function recursiveWalkDir(directoryPath, visitFile) {
 function visitFile(file) {
   if (file.endsWith(".java")) {
     replaceImportForJava(file);
+  } else if (file.endsWith(".xml") && file.indexOf("res/layout") !== -1) {
+    replaceImportForLayout(file);
   }
 }
 

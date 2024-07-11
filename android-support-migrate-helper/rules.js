@@ -26,6 +26,11 @@ module.exports = {
   "android.databinding.DataBindingUtil": "androidx.databinding.DataBindingUtil",
   "android.databinding.BaseObservable": "androidx.databinding.BaseObservable",
   "android.databinding.Bindable": "androidx.databinding.Bindable",
-  "android.support.v4.content.ContextCompat":"androidx.core.content.ContextCompat",
-  "android.support.v7.widget.PopupMenu":"androidx.appcompat.widget.PopupMenu"
+  "android.support.v4.content.ContextCompat":
+    "androidx.core.content.ContextCompat",
+  "android.support.v7.widget.PopupMenu": "androidx.appcompat.widget.PopupMenu",
+  "android.support.design.widget.CoordinatorLayout":
+    "androidx.coordinatorlayout.widget.CoordinatorLayout",
+  "android.support.design.widget.AppBarLayout":
+    "com.google.android.material.appbar.AppBarLayout",
 };
