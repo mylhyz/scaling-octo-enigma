@@ -22,4 +22,10 @@ module.exports = {
   "android.support.v4.view.ViewCompat": "androidx.core.view.ViewCompat",
   "android.support.v4.widget.SwipeRefreshLayout":
     "androidx.swiperefreshlayout.widget.SwipeRefreshLayout",
+  "android.databinding.BindingAdapter": "androidx.databinding.BindingAdapter",
+  "android.databinding.DataBindingUtil": "androidx.databinding.DataBindingUtil",
+  "android.databinding.BaseObservable": "androidx.databinding.BaseObservable",
+  "android.databinding.Bindable": "androidx.databinding.Bindable",
+  "android.support.v4.content.ContextCompat":"androidx.core.content.ContextCompat",
+  "android.support.v7.widget.PopupMenu":"androidx.appcompat.widget.PopupMenu"
 };
