@@ -20,7 +20,7 @@ function replaceImportForLayout(file) {
   fs.writeFileSync(file, newContents, { encoding: "utf-8" });
 }
 
-function replaceImportForJava(file) {
+function replaceImportForJavaOrKotlin(file) {
   const contents = fs.readFileSync(file, { encoding: "utf-8" });
   const lines = contents.split("\n");
   const newLines = [];
@@ -65,8 +65,8 @@ function recursiveWalkDir(directoryPath, visitFile) {
 }
 
 function visitFile(file) {
-  if (file.endsWith(".java")) {
-    replaceImportForJava(file);
+  if (file.endsWith(".java") || file.endsWith(".kt")) {
+    replaceImportForJavaOrKotlin(file);
   } else if (file.endsWith(".xml") && file.indexOf("res/layout") !== -1) {
     replaceImportForLayout(file);
   }
