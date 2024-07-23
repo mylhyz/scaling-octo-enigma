@@ -44,9 +44,19 @@ function visitFile(file) {
           if (callee.type === "Identifier" && callee.name === "require") {
             const args = declaration.init.arguments;
             if (args.length === 1 && args[0].type === "StringLiteral") {
-              console.log(
-                `import ${declaration.id.name} from "${args[0].value}"`
-              );
+              if (declaration.id.type === "Identifier") {
+                console.log(
+                  `import ${declaration.id.name} from "${args[0].value}"`
+                );
+              } else if (declaration.id.type === "ObjectPattern") {
+                let props = [];
+                declaration.id.properties.forEach((prop) => {
+                  props.push(prop.key.name);
+                });
+                console.log(
+                  `import { ${props.join(", ")} } from "${args[0].value}"`
+                );
+              }
             }
           }
         }
