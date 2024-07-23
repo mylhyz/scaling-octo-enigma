@@ -33,7 +33,9 @@ function recursiveWalkDir(directoryPath, visitFile) {
 
 function visitFile(file) {
   const SourceCode = fs.readFileSync(file, { encoding: "utf-8" });
-  const AST = parser.parse(SourceCode);
+  const AST = parser.parse(SourceCode, {
+    plugins: ["jsx"],
+  });
   traverse(AST, {
     VariableDeclaration(path) {
       path.node.declarations.forEach((declaration) => {
@@ -42,7 +44,9 @@ function visitFile(file) {
           if (callee.type === "Identifier" && callee.name === "require") {
             const args = declaration.init.arguments;
             if (args.length === 1 && args[0].type === "StringLiteral") {
-              console.log(`import ${declaration.id.name} from "${args[0].value}"`);
+              console.log(
+                `import ${declaration.id.name} from "${args[0].value}"`
+              );
             }
           }
         }
