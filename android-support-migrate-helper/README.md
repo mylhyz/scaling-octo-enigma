@@ -1,5 +1,7 @@
 # Usage
 
+desc: 将 Android 项目中的 android.support 的代码替换为 androidx
+
 ```bash
 node index.js <path-to-src>
 ```
