@@ -31,7 +31,51 @@ const createNode = (path, size) => {
     }
   }
   parent.children.push({ name: file, size: size });
-  console.log("done " + path);
+};
+
+const findNode = (path) => {
+  let paths = path.split("/");
+  let dirs = paths.slice(1);
+  let parent = Tree;
+  for (let dir of dirs) {
+    let children = parent.children;
+    for (let child of children) {
+      if (child.name == dir) {
+        parent = child;
+        break;
+      }
+    }
+  }
+  // 这里必然是能够找到parent，这里不考虑路径传入错误的情况
+  return parent;
+};
+
+const sumSize = (node) => {
+  // 计算指定路径下的所有文件大小总和
+  if (node.size !== undefined) {
+    return node.size;
+  }
+  let sum = 0;
+  const children = node.children;
+  for (let child of children) {
+    sum = sum + sumSize(child);
+  }
+  return sum;
+};
+
+const KB = 1024;
+const MB = 1024 * KB;
+const GB = 1024 * MB;
+
+const normalSize = (size) => {
+  if (size > GB) {
+    return (size / GB).toFixed(2) + " GB";
+  } else if (size > MB) {
+    return (size / MB).toFixed(2) + " MB";
+  } else if (size > KB) {
+    return (size / KB).toFixed(2) + " KB";
+  }
+  return size + " B";
 };
 
 const runMain = (argv) => {
@@ -51,7 +95,8 @@ const runMain = (argv) => {
         let size = row.size;
         createNode(path, size);
       }
-      console.log("???")
+      const size = sumSize(findNode("/storage/emulated/0"));
+      console.log(normalSize(size));
     });
   });
   db.close();
