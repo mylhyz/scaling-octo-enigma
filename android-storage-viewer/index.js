@@ -1,4 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
+const fs = require("node:fs");
 
 // 基本流程
 // 遍历每一个item，对每个路径进行分割，构造出一个树形结构，这个树的节点分为目录和文件，目录下有文件列表，文件只有大小属性
@@ -50,6 +51,19 @@ const findNode = (path) => {
   return parent;
 };
 
+const useDepth = (node, depth) => {
+  if (depth == 0 || node.children === undefined) {
+    if (node && node.children !== undefined) {
+      node.children = [];
+    }
+    return;
+  }
+  let children = node.children;
+  for (let child of children) {
+    useDepth(child, depth - 1);
+  }
+};
+
 const sumSize = (node) => {
   // 计算指定路径下的所有文件大小总和
   if (node.size !== undefined) {
@@ -78,6 +92,19 @@ const normalSize = (size) => {
   return size + " B";
 };
 
+const deepClone = (object) => {
+  return JSON.parse(JSON.stringify(object));
+};
+
+const writeJSON = (node, depth = 0) => {
+  const cloned = deepClone(node);
+  if (depth !== 0) {
+    useDepth(cloned, depth);
+  }
+  const json = JSON.stringify(cloned, null, 2);
+  fs.writeFileSync("data.json", json, { encoding: "utf-8" });
+};
+
 const runMain = (argv) => {
   if (argv.length !== 1) {
     console.log("useage: node index.js <path-to-db>");
@@ -95,6 +122,7 @@ const runMain = (argv) => {
         let size = row.size;
         createNode(path, size);
       }
+      writeJSON(findNode("/storage/emulated/0"), 2);
       const size = sumSize(findNode("/storage/emulated/0"));
       console.log(normalSize(size));
     });
